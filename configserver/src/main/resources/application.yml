@@ -1,0 +1,43 @@
+server:
+  port: 8071
+
+spring:
+  application:
+   name: "configserver"
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/IWillPinchU/Big-Bank-Configuration.git"
+          default-label: master
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+          search-paths: config
+
+encrypt:
+  key: "174174714717DUQUQNIFFFA123131ASDADAS"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
